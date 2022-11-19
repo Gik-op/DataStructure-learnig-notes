@@ -1,0 +1,26 @@
+The result for rank-sort:0.244
+The result for rearrange rank-sort:0.252
+The result for select-sort:0.145
+The result for terminate-in-time select-sort:0.111
+The result for bubble-sort:0.221
+The result for terminate-in-time bubble-sort:0.212
+The result for insert-sort:0.079
+Done.
+
+The result for rank-sort:0.253
+The result for rearrange rank-sort:0.258
+The result for select-sort:0.133
+The result for terminate-in-time select-sort:0.111
+The result for bubble-sort:0.204
+The result for terminate-in-time bubble-sort:0.204
+The result for insert-sort:0.063
+Done.
+
+The result for rank-sort:0.254
+The result for rearrange rank-sort:0.223
+The result for select-sort:0.117
+The result for terminate-in-time select-sort:0.125
+The result for bubble-sort:0.203
+The result for terminate-in-time bubble-sort:0.209
+The result for insert-sort:0.063
+Done.
