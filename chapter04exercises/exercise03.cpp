@@ -40,7 +40,7 @@ int main()
     using namespace std;
     int test[1000],step=10;
     double clockPerMill = double(CLOCKS_PER_SEC)/1000;
-    cout << "The worst-case time for insertionSort(), in milliseconds, are\n";
+    cout << "The worst-case time for bubbleSort(), in milliseconds, are\n";
     cout << "n \tTime per bubbleSort\tTime per In-time bubbleSort\n";
 
     for(int n=0;n<=1000;n+=step)
