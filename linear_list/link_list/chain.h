@@ -57,8 +57,33 @@ public:
     void output(std::ostream &os) const;
 };
 
-// functions
+template<class T>
+class extendedChain : public chain<T>
+{
+protected:
+    chainNode<T> *lastNode;
+public:
+    explicit extendedChain(int initialCapacity=10);
+    extendedChain(const extendedChain<T>&theChain);
+    ~extendedChain();
 
+    // ADT function
+    bool empty() const { return chain<T>::empty();}
+    int size() const { return chain<T>::size();}
+    T& get(int theIndex) const { return chain<T>::get(theIndex);}
+    int indexOf(const T &theElement) const { return chain<T>::indexOf(theElement);}
+    void erase(int theIndex) { chain<T>::erase(theIndex);}
+    void insert(int theIndex,const T &theElement) { chain<T>::insert(theIndex,theElement);}
+    void output(std::ostream &os) const { chain<T>::output(os);}
+
+    // extended functions
+    void clear();
+    void push_back(const T &theElement);
+};
+
+/* functions */
+
+// exceptions
 class illegalIndex : public std::exception
 {
 private:
@@ -76,6 +101,8 @@ public:
     explicit illegalParameter(std::string s="Illegal parameter value") : mess(std::move(s)) { }
     const char* what() {return mess.c_str();}
 };
+
+/* chain functions */
 
 template<class T>
 void chain<T>::checkIndex(int theIndex) const
@@ -223,6 +250,86 @@ void chain<T>::output(std::ostream &os) const
     }
     if(listSize%5!=0)
         os << std::endl;
+}
+
+/* extendedChain functions */
+
+template<class T>
+extendedChain<T>::extendedChain(int initialCapacity)
+{
+    if(initialCapacity<=0)
+    {
+        std::ostringstream s;
+        s << "Initial capacity = " << initialCapacity << " Must be > 0";
+        throw illegalParameter(s.str());
+    }
+    chain<T>::firstNode = NULL;
+    chain<T>::listSize = 0;
+    lastNode = NULL;
+}
+
+template<class T>
+extendedChain<T>::extendedChain(const extendedChain<T> &theChain)
+{
+    chain<T>::listSize = theChain.chain<T>::listSize;
+    if(chain<T>::listSize==0)
+    {
+        chain<T>::firstNode = NULL;
+        lastNode = NULL;
+        return;
+    }
+
+    chainNode<T> *sourceNode = theChain.chain<T>::firstNode;
+    chainNode<T> *targetNode;
+    chain<T>::firstNode = new chainNode<T>(sourceNode->element);
+    sourceNode = sourceNode->next;
+    targetNode = chain<T>::firstNode;
+    while(sourceNode!=NULL)
+    {
+        targetNode->next = new chainNode<T>(sourceNode->element);
+        sourceNode = sourceNode->next;
+        targetNode = targetNode->next;
+    }
+    targetNode->next = NULL;
+    lastNode = targetNode;
+}
+
+template<class T>
+extendedChain<T>::~extendedChain()
+{
+    while(chain<T>::firstNode!=NULL)
+    {
+        chainNode<T> *temp = chain<T>::firstNode->next;
+        delete chain<T>::firstNode;
+        chain<T>::firstNode = temp;
+    }
+}
+
+template<class T>
+void extendedChain<T>::clear()
+{
+    chainNode<T> *currentNode = chain<T>::firstNode;
+    while(currentNode!=lastNode)
+    {
+        chainNode<T> *nextNode = currentNode->next;
+        delete currentNode;
+        currentNode = nextNode;
+    }
+    chain<T>::listSize = 0;
+}
+
+template<class T>
+void extendedChain<T>::push_back(const T &theElement)
+{
+    auto *newNode = new chainNode<T>(theElement,NULL);
+    if(chain<T>::firstNode == NULL)
+        chain<T>::firstNode = lastNode = newNode;
+    else
+    {
+        lastNode->next = newNode;
+        lastNode = newNode;
+    }
+    chain<T>::listSize++;
 }
 
 #endif //LINKED_LIST_LINKLIST_H
